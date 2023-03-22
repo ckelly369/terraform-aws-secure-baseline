@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "ckelly-terraform-backend-test"
+    bucket = "ckelly-terraform-backend1"
     key    = "internal-dev/terraform.tfstate"
     region = "eu-west-2"
   }
@@ -17,15 +17,6 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-
-module "secure_baseline_eu_west_2" {
-  source = "../../modules/vpc-baseline"
-
-  providers = {
-    aws = aws.eu-west-2
-   }
-}
-
 module "secure_baseline_eu_west_1" {
   source = "../../modules/vpc-baseline"
 
@@ -34,18 +25,26 @@ module "secure_baseline_eu_west_1" {
    }
 }
 
-module "secure_baseline_us_west_1" {
-  source = "../../modules/vpc-baseline"
+# module "secure_baseline_eu_west_2" {
+#   source = "../../modules/vpc-baseline"
 
-  providers = {
-    aws = aws.us-west-1
-   }
-}
+#   providers = {
+#     aws = aws.eu-west-2
+#    }
+# }
 
-module "secure_baseline_us_west_2" {
-  source = "../../modules/vpc-baseline"
+# module "secure_baseline_us_west_1" {
+#   source = "../../modules/vpc-baseline"
 
-  providers = {
-    aws = aws.us-west-2
-   }
-}
+#   providers = {
+#     aws = aws.us-west-1
+#    }
+# }
+
+# module "secure_baseline_us_west_2" {
+#   source = "../../modules/vpc-baseline"
+
+#   providers = {
+#     aws = aws.us-west-2
+#    }
+# }
