@@ -1,7 +1,3 @@
-locals {
-  flow_logs_to_cw_logs = var.enable_flow_logs && var.flow_logs_destination_type == "cloud-watch-logs"
-}
-
 data "aws_subnets" "default" {
   filter {
     name   = "default-for-az"
@@ -13,35 +9,6 @@ data "aws_subnet" "default" {
   for_each = toset(data.aws_subnets.default.ids)
   id       = each.value
 }
-
-# --------------------------------------------------------------------------------------------------
-# Enable VPC Flow Logs for the default VPC.
-# --------------------------------------------------------------------------------------------------
-
-resource "aws_cloudwatch_log_group" "default_vpc_flow_logs" {
-  count = var.enable_flow_logs && local.flow_logs_to_cw_logs ? 1 : 0
-
-  name              = var.flow_logs_log_group_name
-  retention_in_days = var.flow_logs_retention_in_days
-
-  tags = var.tags
-}
-
-resource "aws_flow_log" "default_vpc_flow_logs" {
-  count = var.enable_flow_logs ? 1 : 0
-
-  log_destination_type = var.flow_logs_destination_type
-  log_destination      = local.flow_logs_to_cw_logs ? aws_cloudwatch_log_group.default_vpc_flow_logs[0].arn : "${var.flow_logs_s3_arn}/${var.flow_logs_s3_key_prefix}"
-  iam_role_arn         = local.flow_logs_to_cw_logs ? var.flow_logs_iam_role_arn : null
-  vpc_id               = aws_default_vpc.default.id
-  traffic_type         = "ALL"
-
-  tags = var.tags
-}
-
-# --------------------------------------------------------------------------------------------------
-# Clears rules associated with default resources.
-# --------------------------------------------------------------------------------------------------
 
 resource "aws_default_vpc" "default" {
   tags = merge(
