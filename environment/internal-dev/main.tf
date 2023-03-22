@@ -18,7 +18,7 @@ provider "aws" {
 }
 
 
-module "secure_baseline_eu" {
+module "secure_baseline_eu_west_2" {
   source = "../../modules/vpc-baseline"
 
   providers = {
@@ -26,7 +26,7 @@ module "secure_baseline_eu" {
    }
 }
 
-module "secure_baseline_eu2" {
+module "secure_baseline_eu_west_1" {
   source = "../../modules/vpc-baseline"
 
   providers = {
@@ -34,10 +34,18 @@ module "secure_baseline_eu2" {
    }
 }
 
-module "secure_baseline_us" {
+module "secure_baseline_us_west_1" {
   source = "../../modules/vpc-baseline"
 
   providers = {
     aws = aws.us-west-1
+   }
+}
+
+module "secure_baseline_us_west_2" {
+  source = "../../modules/vpc-baseline"
+
+  providers = {
+    aws = aws.us-west-2
    }
 }
