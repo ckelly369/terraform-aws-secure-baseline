@@ -18,7 +18,6 @@ module "vpc_baseline_eu_west_1" {
 
   providers = {
     aws = aws.eu-west-1
-    # aws = aws.eu-west-2
    }
 }
 
